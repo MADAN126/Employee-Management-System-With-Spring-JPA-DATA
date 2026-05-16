@@ -1,0 +1,178 @@
+package com.jpa.main.entity;
+
+import java.util.List;
+import java.util.Objects;
+
+import org.hibernate.annotations.ManyToAny;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToOne;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@Data
+@AllArgsConstructor
+@Entity
+@Table(name = "emp_details")
+public class EmployeeDetails {
+	public EmployeeDetails(long employeeId, String name, int age, float salary, String city, String gender,
+			String country) {
+		super();
+		this.employeeId = employeeId;
+		this.name = name;
+		this.age = age;
+		this.salary = salary;
+		this.city = city;
+		this.gender = gender;
+		this.country = country;
+	}
+
+	public long getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(long employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public AddrDetails getAddr() {
+		return addr;
+	}
+
+	public void setAddr(AddrDetails addr) {
+		this.addr = addr;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public float getSalary() {
+		return salary;
+	}
+
+	public void setSalary(float salary) {
+		this.salary = salary;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public List<Parking> getParking() {
+		return Parking;
+	}
+
+	public void setParking(List<Parking> parking) {
+		Parking = parking;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	@Override
+	public String toString() {
+		return "EmployeeDetails [employeeId=" + employeeId + ", name=" + name + ", age=" + age + ", salary=" + salary
+				+ ", city=" + city + ", gender=" + gender + ", country=" + country + ", addr=" + addr + ", Parking="
+				+ Parking + "]";
+	}
+
+	@Id
+	@Column(name = "emp_id")
+	private long employeeId;
+
+	@Column(name = "name")
+	private String name;
+
+	private int age;
+
+	private float salary;
+
+	private String city;
+
+	private String gender;
+
+	private String country;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "addr_id")
+	private AddrDetails addr;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "emp_id")
+	private List<Parking> Parking;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "dept_emp_id")
+	private Department department;
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(Parking, addr, age, city, country, department, employeeId, gender, name, salary);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EmployeeDetails other = (EmployeeDetails) obj;
+		return Objects.equals(Parking, other.Parking) && Objects.equals(addr, other.addr) && age == other.age
+				&& Objects.equals(city, other.city) && Objects.equals(country, other.country)
+				&& Objects.equals(department, other.department) && employeeId == other.employeeId
+				&& Objects.equals(gender, other.gender) && Objects.equals(name, other.name)
+				&& Float.floatToIntBits(salary) == Float.floatToIntBits(other.salary);
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+}
